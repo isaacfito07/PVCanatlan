@@ -1,0 +1,1 @@
+UPDATE PVVentas SET Cancelado = 0
