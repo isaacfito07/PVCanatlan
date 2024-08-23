@@ -142,7 +142,8 @@ namespace PVLaJoya
             this.nudFondo.Size = new System.Drawing.Size(161, 40);
             this.nudFondo.TabIndex = 47;
             this.nudFondo.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudFondo.Click += new System.EventHandler(this.nudFondo_Click);
+            this.nudFondo.Enter += new System.EventHandler(this.nudFondo_Enter);
+            this.nudFondo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nudFondo_KeyDown);
             // 
             // FCajaFondo
             // 

@@ -835,7 +835,7 @@ namespace PVLaJoya
 
             string NombreCliente = CBCliente.SelectedIndex == -1 ? txtNombreCliente.Text : CBCliente.Text;
 
-            double total = Convert.ToDouble(lblTotal.Text.Trim().Replace("Total:$","")) - (Convert.ToDouble(lblIVA.Text.Trim()) + Convert.ToDouble(lblIEPS.Text.Trim()));
+            double total = Convert.ToDouble(lblTotal.Text.Trim().Replace("Total:$","")) - (Convert.ToDouble(lblIVA.Text.Trim().Replace("$","")) + Convert.ToDouble(lblIEPS.Text.Trim().Replace("$", "")));
             FPago pago = new FPago(sqlLoc, sql, total.ToString("C2"), 
                 Convert.ToDouble(lblIVA.Text.Trim()), 
                 Convert.ToDouble(lblIEPS.Text.Trim()), idUsuario, idSucursal, HabilitarCreditoComoFormaPago(ClienteConPosibleCredito), NombreCliente, false, Convert.ToInt32(CBCliente.SelectedValue));
@@ -2734,6 +2734,18 @@ namespace PVLaJoya
                         string idMarca = existeP[0]["IdMarca"].ToString();
                         string idLinea = existeP[0]["IdLinea"].ToString();
 
+                        switch (ObtenerTipoCliente())
+                        {
+                            case 1:
+                                PrecioFinal = Convert.ToDouble(existeP[0]["PrecioGeneral"]).ToString("C2");
+                                break;
+                            case 2:
+                                PrecioFinal = Convert.ToDouble(existeP[0]["PrecioTalleres"]).ToString("C2");
+                                break;
+                            case 3:
+                                PrecioFinal = Convert.ToDouble(existeP[0]["PrecioDistribuidores"]).ToString("C2");
+                                break;
+                        }
 
                         lblDescProd.Text = Producto;
                         lblPrecioProd.Text = PrecioFinal;
@@ -2863,6 +2875,19 @@ namespace PVLaJoya
                     string Precio = Convert.ToDouble(existe[0]["Precio"]).ToString("C2");
                     string Imagen = existe[0]["Foto"].ToString();
                     string PrecioFinal = Convert.ToDouble(existe[0]["PrecioFinal"]).ToString("C2");
+
+                    switch (idTipoCliente)
+                    {
+                        case 1:
+                            PrecioFinal = Convert.ToDouble(existe[0]["PrecioGeneral"]).ToString("C2");
+                            break;
+                        case 2:
+                            PrecioFinal = Convert.ToDouble(existe[0]["PrecioTalleres"]).ToString("C2");
+                            break;
+                        case 3:
+                            PrecioFinal = Convert.ToDouble(existe[0]["PrecioDistribuidores"]).ToString("C2");
+                            break;
+                    }
 
                     lblDescProd.Text = Producto;
                     lblPrecioProd.Text = PrecioFinal;
@@ -4182,8 +4207,21 @@ namespace PVLaJoya
                 double subtotal =
                     (Convert.ToInt32(gvr.Cells[indQty].Value) * 
                     double.Parse(gvr.Cells[indPrecioInicial].Value.ToString(), NumberStyles.Currency, null));
-                double total =
-                    double.Parse(gvr.Cells[indTotal].Value.ToString(), NumberStyles.Currency, null);
+
+                double total = 0;
+                    //double.Parse(gvr.Cells[indTotal].Value.ToString(), NumberStyles.Currency, null);
+                switch (ObtenerTipoCliente())
+                {
+                    case 1:
+                        total = Convert.ToDouble(((dtProductos.Select("id = " + gvr.Cells[indIdProd].Value.ToString() + " AND EsCaja = " + gvr.Cells[indEsCaja].Value.ToString()))[0][17]));
+                        break;
+                    case 2:
+                        total = Convert.ToDouble(((dtProductos.Select("id = " + gvr.Cells[indIdProd].Value.ToString() + " AND EsCaja = " + gvr.Cells[indEsCaja].Value.ToString()))[0][18]));
+                        break;
+                    case 3:
+                        total = Convert.ToDouble(((dtProductos.Select("id = " + gvr.Cells[indIdProd].Value.ToString() + " AND EsCaja = " + gvr.Cells[indEsCaja].Value.ToString()))[0][19]));
+                        break;
+                }
 
                 if (gvr.Cells[indIVA].Value != null)
                     if (double.TryParse(gvr.Cells[indIVA].Value.ToString(), out iva)) { }
@@ -4191,7 +4229,7 @@ namespace PVLaJoya
                 if (gvr.Cells[indIEPS].Value != null)
                     if (double.TryParse(gvr.Cells[indIEPS].Value.ToString(), out ieps)) { }
 
-                sum += total;
+                sum += double.Parse(gvr.Cells[indTotal].Value.ToString(), NumberStyles.Currency, null);
 
                 if (iva > 0)
                 {
@@ -4629,7 +4667,7 @@ namespace PVLaJoya
                 FolioVenta = dtFolioVenta.Rows[0]["FolioVenta"].ToString();
             }
 
-            string urlBase = "https://agape.ledsco.com.mx/FacturacionMasiva.aspx";
+            string urlBase = "https://abarrotescanatlan.ledsco.com.mx/FacturacionMasiva.aspx";
             string parametros = "?s=" + idSucursal + "&f=" + FolioTicket + "&fv=" + FechaVenta + "&ff=" + FolioVenta + "&idu=" + idUsuario;
             string url = urlBase + parametros;
 
