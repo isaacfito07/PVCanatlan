@@ -73,7 +73,7 @@ namespace PVLaJoya
                             + " LEFT JOIN PVVentaPago P ON P.FolioVenta = V.FolioVenta \n"
                             + " LEFT JOIN ( \n"
                             + "    SELECT FolioVenta, SUM((Precio - MontoDescuento)* Cantidad) Subtotal, \n"
-                            + "    SUM((((Precio - MontoDescuento)* Cantidad) - (((Precio - MontoDescuento) * Cantidad) / (1 + iva)))+ (((Precio - MontoDescuento) * Cantidad) * ieps)) IvaIeps \n"
+                            + "    SUM(Cantidad * ((PrecioSinImpuesto * Iva) + (PrecioSinImpuesto * Ieps))) AS IvaIeps \n"
                             + "    FROM PVVentasDetalle WHERE FolioVenta = '" + folioVenta + "'\n"
                             + "    GROUP BY FolioVenta \n"
                             + " ) VD ON VD.FolioVenta = V.FolioVenta \n"

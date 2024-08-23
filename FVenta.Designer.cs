@@ -170,9 +170,9 @@ namespace PVLaJoya
             this.btnReimprimir.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
             this.btnReimprimir.ForeColor = System.Drawing.Color.White;
             this.btnReimprimir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnReimprimir.Location = new System.Drawing.Point(795, 625);
+            this.btnReimprimir.Location = new System.Drawing.Point(755, 625);
             this.btnReimprimir.Name = "btnReimprimir";
-            this.btnReimprimir.Size = new System.Drawing.Size(146, 71);
+            this.btnReimprimir.Size = new System.Drawing.Size(186, 35);
             this.btnReimprimir.TabIndex = 4;
             this.btnReimprimir.TabStop = false;
             this.btnReimprimir.Text = "Reimprimir (F7)";
@@ -191,7 +191,7 @@ namespace PVLaJoya
             this.btnTerminar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnTerminar.Location = new System.Drawing.Point(517, 625);
             this.btnTerminar.Name = "btnTerminar";
-            this.btnTerminar.Size = new System.Drawing.Size(272, 71);
+            this.btnTerminar.Size = new System.Drawing.Size(237, 71);
             this.btnTerminar.TabIndex = 3;
             this.btnTerminar.TabStop = false;
             this.btnTerminar.Text = "Pagar (F8)";
@@ -290,14 +290,13 @@ namespace PVLaJoya
             this.btnCancelar.ForeColor = System.Drawing.Color.White;
             this.btnCancelar.Image = global::PVLaJoya.Properties.Resources.iconX24x24;
             this.btnCancelar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCancelar.Location = new System.Drawing.Point(560, 625);
+            this.btnCancelar.Location = new System.Drawing.Point(756, 660);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(194, 71);
+            this.btnCancelar.Size = new System.Drawing.Size(186, 35);
             this.btnCancelar.TabIndex = 0;
-            this.btnCancelar.Text = "Cancelar Venta (F5)";
+            this.btnCancelar.Text = "Cancelar (Del)";
             this.btnCancelar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCancelar.UseVisualStyleBackColor = false;
-            this.btnCancelar.Visible = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             this.btnCancelar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.btnCancelar_KeyDown);
             // 
