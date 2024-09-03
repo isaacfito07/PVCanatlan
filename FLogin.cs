@@ -410,7 +410,7 @@ namespace PVLaJoya
                     {
                         try
                         {
-                            string rutaImagen = "https://agape.ledsco.com.mx/FotosProductos/" + dr["Foto"].ToString();
+                            string rutaImagen = "https://abarrotescanatlan.ledsco.com.mx/FotosProductos/" + dr["Foto"].ToString();
                             pbxImg.Load(rutaImagen);
                             pbxImg.Image.Save(dirProductos + dr["Foto"].ToString());
                         }
