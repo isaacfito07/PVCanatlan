@@ -96,7 +96,7 @@ namespace PVLaJoya
             idUsuario = _idUsuario;
             numCaja = _numCaja;
 
-            InitializeSerialPort();
+            //InitializeSerialPort();
 
             dtProductos = _dtProductos;
 
@@ -201,6 +201,7 @@ namespace PVLaJoya
             toolTip.ToolTipTitle = "IMPORTANTE";
 
             btnBorrarTxtCliente.Visible = false;
+            txtScan.Select();
         }
 
 
@@ -2164,6 +2165,17 @@ namespace PVLaJoya
                     }
                     if (Pesaje)
                     {
+                        FPesa fPesa = new FPesa(existe[0]["Producto"].ToString(), Convert.ToDouble(PrecioFinal.Replace("$", "")), sqlLoc);
+                        fPesa.ShowDialog();
+
+                        if (fPesa.Correcto)
+                        {
+                            lblPeso.Text = (fPesa.Cantidad).ToString();
+                        }
+                        else
+                            goto Terminar;
+
+                        /*
                         // Envía el carácter 'P' para solicitar la lectura
                         lock (datosRecibidosLock)
                         {
@@ -2191,6 +2203,7 @@ namespace PVLaJoya
                         {
                             MessageBox.Show("No se recibió respuesta de la báscula.");
                         }
+                        */
                     }
                     else
                     {
@@ -3165,7 +3178,16 @@ namespace PVLaJoya
 
 
                     if (Pesaje)
-                    {
+                        {
+                        FPesa fPesa = new FPesa(existe[0]["Producto"].ToString(), Convert.ToDouble(PrecioFinal.Replace("$", "")), sqlLoc);
+                        fPesa.ShowDialog();
+
+                        if (fPesa.Correcto)
+                        {
+                            lblPeso.Text = (fPesa.Cantidad).ToString();
+                        }
+
+                        /*
                         // Envía el carácter 'P' para solicitar la lectura
                         lock (datosRecibidosLock)
                         {
@@ -3192,6 +3214,7 @@ namespace PVLaJoya
                         {
                             MessageBox.Show("No se recibió respuesta de la báscula.");
                         }
+                        */
                     }
                     else
                     {
