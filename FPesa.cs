@@ -40,12 +40,19 @@ namespace PVLaJoya
                 txtPeso.KeyPress += new KeyPressEventHandler(txtPeso_KeyPress);
                 txtPeso.KeyDown += new KeyEventHandler(txtPeso_KeyDown);
             }
-            // Ruta del archivo de fuente
-            string fontPath = System.IO.Path.Combine(Application.StartupPath, "Fonts", "digital-7.ttf");
+            try
+            {
+                // Ruta del archivo de fuente
+                string fontPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Resources", "fonts", "digital-7.ttf");
 
-            // Cargar la fuente desde el archivo
-            privateFonts.AddFontFile(fontPath);
-            txtPeso.Font = new Font(privateFonts.Families[0], 26);
+                // Cargar la fuente desde el archivo
+                privateFonts.AddFontFile(fontPath);
+                txtPeso.Font = new Font(privateFonts.Families[0], 26);
+            }
+            catch
+            {
+
+            }
         }
 
         private void FPesa_KeyDown(object sender, KeyEventArgs e)
@@ -207,12 +214,16 @@ namespace PVLaJoya
         {
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             timer.Tick += (s, e) => EnviarComandoP();
+            timer.Interval = 200;
             timer.Start();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            serialPortPesa.Close();
+            if (serialPortPesa != null && serialPortPesa.IsOpen)
+            {
+                serialPortPesa.Close();
+            }
         }
     }
 }

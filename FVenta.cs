@@ -48,6 +48,7 @@ namespace PVLaJoya
 
         private SerialPort serialPort;
         bool Pesaje = false;
+        bool _qtyFinal = true;
 
         private string pesoLeido = string.Empty;
         private bool datosRecibidos = false;
@@ -356,7 +357,7 @@ namespace PVLaJoya
 
             //Nueva version
             queryProductos = " SELECT DISTINCT P.Id, \n"
-            + " CONCAT(ISNULL(P2.Descripcion,P.Descripcion), ' ', P.Marca, ' ', \n"
+            + " CONCAT(ISNULL(P2.Descripcion,P.Descripcion), ' ', \n"
             + " P.Presentacion) Producto, \n"
             + " CONCAT(Pres.Presentacion, ' (', Pres.Uom, ')') 'Presentación', \n"
             + " Pres.CodigoBarras, Pres.Uom,\n"
@@ -2747,6 +2748,7 @@ namespace PVLaJoya
 
                     if (qtyFinal <= 0)
                     {
+                        _qtyFinal = false;
                         dgvVenta.Rows.Remove(dgvR);
                     }
 
@@ -2779,16 +2781,26 @@ namespace PVLaJoya
                                 break;
                         }
 
-                        lblDescProd.Text = Producto;
-                        lblPrecioProd.Text = PrecioFinal;
-                        try
+                        if (qtyFinal <= 0)
                         {
-                            var img = @"C:\ImgPuntoVenta\Productos\" + Imagen;
-                            pbImagen.Image = Image.FromFile(img);
-                        }
-                        catch
-                        {
+                            lblDescProd.Text = "-";
+                            lblPrecioProd.Text = "-";
                             pbImagen.Image = null;
+
+                        }
+                        else
+                        {
+                            lblDescProd.Text = Producto;
+                            lblPrecioProd.Text = PrecioFinal;
+                            try
+                            {
+                                var img = @"C:\ImgPuntoVenta\Productos\" + Imagen;
+                                pbImagen.Image = Image.FromFile(img);
+                            }
+                            catch
+                            {
+                                pbImagen.Image = null;
+                            }
                         }
 
                         //bool yaEstaba = false;
@@ -2921,16 +2933,23 @@ namespace PVLaJoya
                             break;
                     }
 
-                    lblDescProd.Text = Producto;
-                    lblPrecioProd.Text = PrecioFinal;
-                    try
+                    if (_qtyFinal)
                     {
-                        var img = @"C:\ImgPuntoVenta\Productos\" + Imagen;
-                        pbImagen.Image = Image.FromFile(img);
+                        lblDescProd.Text = Producto;
+                        lblPrecioProd.Text = PrecioFinal;
+                        try
+                        {
+                            var img = @"C:\ImgPuntoVenta\Productos\" + Imagen;
+                            pbImagen.Image = Image.FromFile(img);
+                        }
+                        catch
+                        {
+                            pbImagen.Image = null;
+                        }
                     }
-                    catch
+                    else
                     {
-                        pbImagen.Image = null;
+                        _qtyFinal = true;
                     }
                 }
 
@@ -3105,7 +3124,7 @@ namespace PVLaJoya
                 string sku = string.Empty;
 
                 string cadenaCodigo = txtScan.Text.Trim();
-                string banderaCodigo = cadenaCodigo.Substring(0, 3);
+                string banderaCodigo = cadenaCodigo.Length > 2 ? cadenaCodigo.Substring(0, 3) : cadenaCodigo ;
                 if (banderaCodigo.Equals("200") && cadenaCodigo.Length == 13) //Condiciones para leer por codigo en pesa
                 {
                     string cadenaCodigoProducto = cadenaCodigo.Substring(3,3);
@@ -3182,6 +3201,7 @@ namespace PVLaJoya
                         FPesa fPesa = new FPesa(existe[0]["Producto"].ToString(), Convert.ToDouble(PrecioFinal.Replace("$", "")), sqlLoc);
                         fPesa.ShowDialog();
 
+                        lblPeso.Text = "--------";
                         if (fPesa.Correcto)
                         {
                             lblPeso.Text = (fPesa.Cantidad).ToString();
@@ -3402,6 +3422,23 @@ namespace PVLaJoya
 
                         }
 
+                        if (Cantidad > 0)
+                        {
+                            lblDescProd.Text = Producto;
+                            lblPrecioProd.Text = PrecioFinal;
+                            try
+                            {
+                                var img = @"C:\ImgPuntoVenta\Productos\" + Imagen;
+                                pbImagen.Image = Image.FromFile(img);
+                            }
+                            catch
+                            {
+                                pbImagen.Image = null;
+                            }
+                        }
+                    }
+                    else
+                    {
                         lblDescProd.Text = Producto;
                         lblPrecioProd.Text = PrecioFinal;
                         try
