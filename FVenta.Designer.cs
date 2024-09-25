@@ -752,7 +752,7 @@ namespace PVLaJoya
             this.pbImagen.BackColor = System.Drawing.Color.White;
             this.pbImagen.Location = new System.Drawing.Point(151, 85);
             this.pbImagen.Name = "pbImagen";
-            this.pbImagen.Size = new System.Drawing.Size(220, 240);
+            this.pbImagen.Size = new System.Drawing.Size(220, 208);
             this.pbImagen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbImagen.TabIndex = 13;
             this.pbImagen.TabStop = false;
